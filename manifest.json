@@ -1,0 +1,52 @@
+ {
+    "name": "N窓 Enhancer",
+    "version": "1.0.0",
+    "description": "N窓の操作性を向上させます",
+    "manifest_version": 2,
+    "icons": {
+      "16": "icon16.png",
+      "48": "icon48.png",
+      "128": "icon128.png"
+    },
+    "background": {
+      "scripts": ["background.js"],
+      "persistent": false
+    },
+    "content_scripts": [
+      {
+        "matches": [
+          "*://piporoid.net/NMado-dev/*"
+        ],
+        "js":[
+          "nmado.js"
+        ]
+      },
+      {
+        "all_frames": true,
+        "matches": [
+          "https://www.youtube.com/embed/*"
+        ],
+        "run_at":"document_end",
+        "js":[
+          "player.js"
+        ]
+      },
+      {
+        "all_frames": true,
+        "matches": [
+          "https://www.youtube.com/live_chat*"
+        ],
+        "run_at":"document_end",
+        "js":[
+          "chat.js"
+        ]
+      }
+    ],
+    "permissions": [
+      "tabs"
+    ],
+    "web_accessible_resources": [
+      "player.css",
+      "chat.css"
+    ]
+ }
