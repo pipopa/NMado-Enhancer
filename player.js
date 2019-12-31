@@ -13,7 +13,7 @@ function loaded () {
 
 function main () {
   // N窓以外では動作させない
-  if (!document.referrer.match(/^https:\/\/piporoid.net/)) {
+  if (!document.referrer.match(/^https:\/\/piporoid.net\/NMado\//)) {
     return;
   }
 
