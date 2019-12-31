@@ -1,9 +1,9 @@
-window.addEventListener("load", loaded, false);
+﻿window.addEventListener("load", loaded, false);
 
 function loaded () {
   const checkTimer = setInterval(check, 1000);
   function check () {
-    if (document.querySelector("yt-live-chat-header-renderer") === null) {
+    if (document.querySelector("yt-live-chat-header-renderer") === null && document.querySelector("yt-live-chat-app") === null) {
       return
     }
     clearInterval(checkTimer)
@@ -79,6 +79,9 @@ function main () {
   document.querySelector("div.yt-live-chat-app").appendChild(resizeHandle);
 
   header.addEventListener("mousedown", e => {
+    if (e.which !== 1) {
+      return;
+    }
     if (
       e.target.tagName === "YT-LIVE-CHAT-HEADER-RENDERER" ||
       (e.target.tagName !== "YT-ICON" &&
@@ -98,8 +101,14 @@ function main () {
     }
   });
   document.querySelector("div#input-panel").addEventListener("mousedown", e => {
-    console.log(e.target);
-    if (e.target.tagName !== "YT-ICON" && e.target.tagName !== "YT-ICON-BUTTON" && e.target.id !== "input") {
+    if (e.which !== 1) {
+      return;
+    }
+    if (
+      e.target.tagName !== "YT-ICON" &&
+      e.target.tagName !== "YT-ICON-BUTTON" &&
+      e.target.id !== "input"
+    ) {
       chrome.runtime.sendMessage({
         id: "yt-mousedown",
         data: {
@@ -128,6 +137,7 @@ function main () {
   };
   document.documentElement.addEventListener("mousedown", e => {
     if (e.which == 2) {
+      e.preventDefault()
       chrome.runtime.sendMessage({
         id: "yt-mousedown",
         data: {
