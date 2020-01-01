@@ -105,9 +105,10 @@ function main () {
       return;
     }
     if (
-      e.target.tagName !== "YT-ICON" &&
-      e.target.tagName !== "YT-ICON-BUTTON" &&
-      e.target.id !== "input"
+      e.target.classList.contains("yt-live-chat-renderer") ||
+      e.target.classList.contains("yt-live-chat-message-input-renderer") ||
+      e.target.classList.contains("yt-live-chat-author-chip") ||
+      e.target.classList.contains("yt-img-shadow")
     ) {
       chrome.runtime.sendMessage({
         id: "yt-mousedown",
