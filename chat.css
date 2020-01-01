@@ -91,3 +91,7 @@ yt-live-chat-message-input-renderer {
 .yt-live-chat-text-input-field-renderer {
   cursor: text;
 }
+
+.ytp-offline-slate-bar {
+  bottom: 50px;
+}
