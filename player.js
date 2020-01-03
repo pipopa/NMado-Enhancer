@@ -190,53 +190,53 @@ function main () {
       });
     }
   };
-  offlineSlate = document.querySelector("div.ytp-offline-slate")
-  if (offlineSlate) {
-    offlineSlate.addEventListener("mousedown", e => {
-      e.preventDefault();
-      if (e.which !== 1 && e.which !== 2) {
-        return;
+
+player.addEventListener("mousedown", e => {
+  e.preventDefault();
+  if (e.which !== 1 && e.which !== 2) {
+    return;
+  }
+  if (e.targettagName === "video" || e.target.classList.contains("ytp-offline-slate")) {
+    hide();
+    closeButton.style.display = "none";
+    resizeHandle.style.display = "none";
+    chrome.runtime.sendMessage({
+      id: "yt-mousedown",
+      data: {
+        winType: "video",
+        youtubeId: youtubeId,
+        pageX: e.pageX,
+        pageY: e.pageY,
+        which: e.which,
+        action: "move"
       }
-      hide();
+    });
+  }
+})
+player.addEventListener("mouseup", e => {
+  if (e.which == 1) {
+    show();
+    closeButton.style.display = "block";
+    resizeHandle.style.display = "block";
+    clearTimeout(timer);
+    timer = setTimeout(() => {
       closeButton.style.display = "none";
       resizeHandle.style.display = "none";
-      chrome.runtime.sendMessage({
-        id: "yt-mousedown",
-        data: {
-          winType: "video",
-          youtubeId: youtubeId,
-          pageX: e.pageX,
-          pageY: e.pageY,
-          which: e.which,
-          action: "move"
-        }
-      });
-    })
-    offlineSlate.addEventListener("mouseup", e => {
-      if (e.which == 1) {
-        show();
-        closeButton.style.display = "block";
-        resizeHandle.style.display = "block";
-        clearTimeout(timer);
-        timer = setTimeout(() => {
-          closeButton.style.display = "none";
-          resizeHandle.style.display = "none";
-          hide();
-          html5player.style.cursor = "none";
-        }, 2000);
-        chrome.runtime.sendMessage({
-          id: "yt-mouseup",
-          data: {
-            winType: "video",
-            youtubeId: youtubeId,
-            pageX: e.pageX,
-            pageY: e.pageY,
-            which: e.which
-          }
-        });
+      hide();
+      html5player.style.cursor = "none";
+    }, 2000);
+    chrome.runtime.sendMessage({
+      id: "yt-mouseup",
+      data: {
+        winType: "video",
+        youtubeId: youtubeId,
+        pageX: e.pageX,
+        pageY: e.pageY,
+        which: e.which
       }
-    })
+    });
   }
+})
   player.onmousemove = () => {
     if (!dragging) {
       show();
