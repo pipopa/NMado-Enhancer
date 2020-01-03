@@ -60,3 +60,7 @@
 .ytp-fullscreen-button {
   visibility:hidden;
 }
+
+.ytp-offline-slate-bar {
+  bottom: 50px !important;
+}
