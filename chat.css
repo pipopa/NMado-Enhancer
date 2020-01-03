@@ -77,6 +77,16 @@
   z-index:3;
 }
 
+.channel-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-origin: content-box;
+  display: inline-block;
+}
+
 yt-live-chat-app {
   min-height: auto !important;
   min-width: auto !important;

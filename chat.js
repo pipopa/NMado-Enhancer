@@ -27,6 +27,11 @@ function main () {
   const youtubeId = re.exec(location.href)[1];
   let header = document.querySelector("yt-live-chat-header-renderer");
 
+  chrome.runtime.sendMessage({
+    id: "request-channel-icon",
+    data: { youtubeId: youtubeId }
+  });
+
   // 閉じるボタンを追加
   let closeButton = document.createElement("div");
   closeButton.addEventListener("click", () => {
@@ -84,6 +89,7 @@ function main () {
     }
     if (
       e.target.tagName === "YT-LIVE-CHAT-HEADER-RENDERER" ||
+      e.target.classList.contains("channel-icon") ||
       (e.target.tagName !== "YT-ICON" &&
         e.target.classList.contains("yt-live-chat-header-renderer"))
     ) {
@@ -175,6 +181,15 @@ function main () {
         break;
       case "yt-mouseup":
         //header.style.pointerEvents = "auto"
+        break;
+      case "channel-icon":
+        if (data.youtubeId === youtubeId) {
+          const icon = document.createElement("div");
+          icon.classList.add("channel-icon")
+          icon.style.backgroundImage = "url(\"" + data.url + "\")";
+          const ytpButton = document.querySelector("yt-icon-button#overflow")
+          header.insertBefore(icon, ytpButton)
+        }
         break;
     }
   });

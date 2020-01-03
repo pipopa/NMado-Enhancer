@@ -299,6 +299,18 @@ function main () {
       case "yt-mouseup":
         dragging = false;
         break;
+      case "request-channel-icon":
+        if (data.youtubeId === youtubeId) {
+          const icon = document.querySelector("a.ytp-title-channel-logo");
+          if (icon) {
+            const url = icon.style.backgroundImage.slice(5, -2);
+            chrome.runtime.sendMessage({
+              id: "channel-icon",
+              data: { url: url, youtubeId: youtubeId }
+            });
+          }
+        }
+        break;
     }
   });
 };
