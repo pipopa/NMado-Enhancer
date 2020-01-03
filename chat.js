@@ -3,7 +3,9 @@
 function loaded () {
   const checkTimer = setInterval(check, 1000);
   function check () {
-    if (document.querySelector("yt-live-chat-header-renderer") === null && document.querySelector("yt-live-chat-app") === null) {
+    if (document.querySelector("yt-live-chat-header-renderer") === null &&
+        document.querySelector("div#page") === null
+    ) {
       return
     }
     clearInterval(checkTimer)
@@ -45,7 +47,7 @@ function main () {
     header.appendChild(closeButton);
   } else {
     closeButton.classList.add("close-invalid-chat");
-    document.querySelector("yt-live-chat-app").appendChild(closeButton);
+    document.querySelector("div#page").appendChild(closeButton);
   }
 
   // リサイズハンドルを追加
@@ -69,7 +71,7 @@ function main () {
     }
   });
   resizeHandle.addEventListener("mouseover", () => {});
-  resizeHandle.addEventListener("mouseup", () => {
+  resizeHandle.addEventListener("mouseup", (e) => {
     chrome.runtime.sendMessage({
       id: "yt-mouseup",
       data: {
