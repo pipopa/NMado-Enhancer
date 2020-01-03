@@ -192,7 +192,6 @@ function main () {
   };
 
 player.addEventListener("mousedown", e => {
-  e.preventDefault();
   if (e.which !== 1 && e.which !== 2) {
     return;
   }
