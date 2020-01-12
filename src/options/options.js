@@ -37,12 +37,15 @@ document.querySelector('#result-dialog .close').addEventListener('click', () => 
 document.querySelector('#notification-test-button').addEventListener('click', () => {
   chrome.runtime.sendMessage(
     {
-      liveTitle: '通知テスト',
-      authorName: 'みんなよう見とる',
-      message: 'テストだよ',
-      iconUrl: chrome.runtime.getURL('images/icon128.png'),
-      ownerName: 'テスト',
-      ownerIconUrl: chrome.runtime.getURL('images/icon128.png'),
+      id: "comment",
+      data: {
+        liveTitle: "通知テスト",
+        authorName: "みんなよう見とる",
+        message: "テストだよ",
+        iconUrl: chrome.runtime.getURL("icon128.png"),
+        ownerName: "テスト",
+        ownerIconUrl: chrome.runtime.getURL("icon128.png"),
+      }
     },
     () => {},
   );

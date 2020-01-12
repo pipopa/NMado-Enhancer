@@ -1,25 +1,21 @@
-loaded = false;
-window.addEventListener("load", onLoad, false);
-
-function onLoad () {
+const onLoad =  () => {
   const checkTimer = setInterval(check, 1000);
   function check () {
     if (document.querySelector("div.html5-video-player") === null) {
       return
     }
-    loaded = true;
     clearInterval(checkTimer);
     main();
   }
 }
 
-function main () {
+const main = () => {
   // N窓以外では動作させない
   if (!document.referrer.match(/^https:\/\/piporoid.net\/NMado\//)) {
     return;
   }
 
-  let cssPath = chrome.extension.getURL("player.css");
+  let cssPath = chrome.extension.getURL("style/player.css");
   let link = document.createElement("link");
   link.setAttribute("rel", "stylesheet");
   link.setAttribute("type", "text/css");
@@ -33,6 +29,11 @@ function main () {
   let video = document.querySelector("video");
   let dragging = false;
   let timer;
+
+  chrome.runtime.sendMessage({
+    id: "player-loaded",
+    data: { youtubeId: youtubeId }
+  });
 
   const hide = () => {
     document.querySelector("div.ytp-chrome-top").style.opacity = "0.0";
@@ -301,13 +302,12 @@ player.addEventListener("mouseup", e => {
         dragging = false;
         break;
       case "request-player-loading-status":
-        if (data.youtubeId === youtubeId && loaded) {
+        if (data.youtubeId === youtubeId) {
           chrome.runtime.sendMessage({
             id: "player-loaded",
             data: { youtubeId: youtubeId }
           });
         }
-        break;
       case "request-channel-icon":
         if (data.youtubeId === youtubeId) {
           const icon = document.querySelector("a.ytp-title-channel-logo");
@@ -325,7 +325,6 @@ player.addEventListener("mouseup", e => {
           const titleLink = document.querySelector(".ytp-title-link.yt-uix-sessionlink");
           if (titleLink) {
             const liveTitle = titleLink.innerHTML;
-            console.log("player: "  + liveTitle)
             chrome.runtime.sendMessage({
               id: "live-title",
               data: { liveTitle: liveTitle, youtubeId: youtubeId }
@@ -338,7 +337,6 @@ player.addEventListener("mouseup", e => {
           const expandedTitle = document.querySelector(".ytp-title-expanded-title a");
           if (expandedTitle) {
             const ownerName = expandedTitle.innerHTML;
-            console.log("player: "  + ownerName)
             chrome.runtime.sendMessage({
               id: "owner-name",
               data: { ownerName: ownerName, youtubeId: youtubeId }
@@ -349,3 +347,5 @@ player.addEventListener("mouseup", e => {
     }
   });
 };
+
+window.addEventListener("load", onLoad, false);

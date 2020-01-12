@@ -1,0 +1,10 @@
+{
+  "name": "NMado-Enhancer",
+  "version": "1.0.0",
+  "author": "pipopa",
+  "devDependencies": {
+    "clean-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "^5.1.1",
+    "webpack": "^4.41.5"
+  }
+}

@@ -8,7 +8,10 @@
       "48": "icon48.png",
       "128": "icon128.png"
     },
-    "options_page": "options.html",
+    "options_ui": {
+      "page":"options/options.html",
+      "open_in_tab": true
+    },
     "background": {
       "scripts": ["background.js"],
       "persistent": false
@@ -19,7 +22,7 @@
           "*://piporoid.net/NMado/*"
         ],
         "js":[
-          "nmado.js"
+          "nmado_content_script.js"
         ]
       },
       {
@@ -29,7 +32,7 @@
         ],
         "run_at":"document_end",
         "js":[
-          "player.js"
+          "player_content_script.js"
         ]
       },
       {
@@ -39,7 +42,7 @@
         ],
         "run_at":"document_end",
         "js":[
-          "chat.js"
+          "chat_content_script.js"
         ]
       }
     ],
@@ -49,8 +52,8 @@
       "notifications"
     ],
     "web_accessible_resources": [
-      "player.css",
-      "chat.css"
+      "style/player.css",
+      "style/chat.css"
     ],
     "content_security_policy": "script-src 'self' https://code.getmdl.io/; object-src 'self'"
  }

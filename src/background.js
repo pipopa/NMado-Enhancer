@@ -1,4 +1,16 @@
-const storageKey = 'nameList';
+const storageKey = "nameList";
+
+const getBrowser = () => {
+  if (typeof chrome !== "undefined") {
+    if (typeof browser !== "undefined") {
+      return "Firefox";
+    } else {
+      return "Chrome";
+    }
+  } else {
+    return "Edge";
+  }
+}
 
 const getStorageData = key => {
   return new Promise(resolve => {
@@ -29,25 +41,37 @@ const isMac = () => {
 
 const execNotification = async request => {
   const { liveTitle, authorName, message, iconUrl, ownerName, ownerIconUrl } = request;
-  const option = {
+  let title = authorName;
+  let option = {
     type: 'basic',
-    title: authorName,
     message,
-    contextMessage: liveTitle,
-    iconUrl,
-    buttons: [
-      (await isMac())
-        ? {
-            // Macのときは長すぎるメッセージを表示するためにボタンを使う
-            title: message,
-          }
-        : {
-            // Windowsのときは通知元のチャンネル情報を表示するためにボタンを使う
-            title: ownerName,
-            iconUrl: ownerIconUrl,
-          },
-    ],
+    iconUrl
   };
+  if (getBrowser() === "Firefox") {
+    // チャット送信者のあとに配信タイトルをつける
+    title += " from " + liveTitle
+    Object.assign(option, {
+      title
+    })
+  } else {
+    Object.assign(option, {
+      title,
+      contextMessage: liveTitle,
+      buttons: [
+        (await isMac())
+        ? {
+          // Macのときは長すぎるメッセージを表示するためにボタンを使う
+          title: message,
+        }
+        : {
+          // Windowsのときは通知元のチャンネル情報を表示するためにボタンを使う
+          title: ownerName,
+          iconUrl: ownerIconUrl,
+        },
+      ],
+    })
+  }
+  console.log(option);
 
   chrome.notifications.create(option, () => {});
 };
@@ -61,8 +85,8 @@ chrome.runtime.onInstalled.addListener(async () => {
 });
 
 chrome.runtime.onMessage.addListener(message => {
-  console.log(message);
   const { id, data } = message;
+  console.log(id);
   if (id === "comment") {
     execNotification(data);
     return;
