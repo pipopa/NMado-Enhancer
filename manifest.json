@@ -8,6 +8,7 @@
       "48": "icon48.png",
       "128": "icon128.png"
     },
+    "options_page": "options.html",
     "background": {
       "scripts": ["background.js"],
       "persistent": false
@@ -43,10 +44,13 @@
       }
     ],
     "permissions": [
-      "tabs"
+      "tabs",
+      "storage",
+      "notifications"
     ],
     "web_accessible_resources": [
       "player.css",
       "chat.css"
-    ]
+    ],
+    "content_security_policy": "script-src 'self' https://code.getmdl.io/; object-src 'self'"
  }

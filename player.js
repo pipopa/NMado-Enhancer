@@ -1,13 +1,15 @@
-window.addEventListener("load", loaded, false);
+loaded = false;
+window.addEventListener("load", onLoad, false);
 
-function loaded () {
+function onLoad () {
   const checkTimer = setInterval(check, 1000);
   function check () {
     if (document.querySelector("div.html5-video-player") === null) {
       return
     }
-    clearInterval(checkTimer)
-    main()
+    loaded = true;
+    clearInterval(checkTimer);
+    main();
   }
 }
 
@@ -298,6 +300,14 @@ player.addEventListener("mouseup", e => {
       case "yt-mouseup":
         dragging = false;
         break;
+      case "request-player-loading-status":
+        if (data.youtubeId === youtubeId && loaded) {
+          chrome.runtime.sendMessage({
+            id: "player-loaded",
+            data: { youtubeId: youtubeId }
+          });
+        }
+        break;
       case "request-channel-icon":
         if (data.youtubeId === youtubeId) {
           const icon = document.querySelector("a.ytp-title-channel-logo");
@@ -306,6 +316,32 @@ player.addEventListener("mouseup", e => {
             chrome.runtime.sendMessage({
               id: "channel-icon",
               data: { url: url, youtubeId: youtubeId }
+            });
+          }
+        }
+        break;
+      case "request-live-title":
+        if (data.youtubeId === youtubeId) {
+          const titleLink = document.querySelector(".ytp-title-link.yt-uix-sessionlink");
+          if (titleLink) {
+            const liveTitle = titleLink.innerHTML;
+            console.log("player: "  + liveTitle)
+            chrome.runtime.sendMessage({
+              id: "live-title",
+              data: { liveTitle: liveTitle, youtubeId: youtubeId }
+            });
+          }
+        }
+        break;
+      case "request-owner-name":
+        if (data.youtubeId === youtubeId) {
+          const expandedTitle = document.querySelector(".ytp-title-expanded-title a");
+          if (expandedTitle) {
+            const ownerName = expandedTitle.innerHTML;
+            console.log("player: "  + ownerName)
+            chrome.runtime.sendMessage({
+              id: "owner-name",
+              data: { ownerName: ownerName, youtubeId: youtubeId }
             });
           }
         }
