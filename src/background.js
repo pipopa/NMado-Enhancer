@@ -1,3 +1,9 @@
+/*!
+ * vtuber-comment-extension v0.9 (https://github.com/clngn/vtuber-comment-extension)
+ * Copyright (c) 2018 clngn
+ * Licensed under MIT (https://github.com/jgthms/bulma/blob/master/LICENSE)
+ */
+
 const storageKey = "nameList";
 
 const getBrowser = () => {
