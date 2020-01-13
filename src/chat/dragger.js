@@ -21,7 +21,7 @@ const initDragger = (youtubeId) => {
     header.appendChild(closeButton);
   } else {
     closeButton.classList.add("close-invalid-chat");
-    document.querySelector("div#page").appendChild(closeButton);
+    document.querySelector("yt-live-chat-app").appendChild(closeButton);
   }
 
   // リサイズハンドルを追加
