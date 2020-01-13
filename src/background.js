@@ -39,19 +39,26 @@ const isMac = () => {
   });
 };
 
+const fetchBlobUrl = async (url) => {
+  const resp = await fetch(url);
+  const blob = await resp.blob();
+  const blobUrl = window.URL.createObjectURL(blob);
+  return blobUrl;
+}
+
 const execNotification = async request => {
   const { liveTitle, authorName, message, iconUrl, ownerName, ownerIconUrl } = request;
   let title = authorName;
   let option = {
     type: 'basic',
     message,
-    iconUrl
+    iconUrl: await fetchBlobUrl(iconUrl)
   };
   if (getBrowser() === "Firefox") {
     // チャット送信者のあとに配信タイトルをつける
     title += " from " + liveTitle
     Object.assign(option, {
-      title
+      title,
     })
   } else {
     Object.assign(option, {
@@ -66,7 +73,7 @@ const execNotification = async request => {
         : {
           // Windowsのときは通知元のチャンネル情報を表示するためにボタンを使う
           title: ownerName,
-          iconUrl: ownerIconUrl,
+          iconUrl: await fetchBlobUrl(ownerIconUrl),
         },
       ],
     })

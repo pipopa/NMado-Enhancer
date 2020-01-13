@@ -44,12 +44,6 @@ class Watcher {
     return this.ownerIconUrl;
   }
 
-  async fetchBlobUrl(url) {
-    const response = await fetch(url);
-    const blob = await response.blob();
-    return window.URL.createObjectURL(blob);
-  }
-
   getMessage(el) {
     let messageString = '';
 
@@ -75,26 +69,21 @@ class Watcher {
     console.log(authorName);
     console.log(this.nameList);
     if (this.nameList.some(value => value === authorName.trim())) {
-      console.log("hit!");
       const message = this.getMessage(node.querySelector('#message'));
       const iconUrl = node.querySelector('#img').getAttribute('src');
       const iconLargeUrl = iconUrl.replace(/\/photo.jpg$/, '');
       const liveTitle = this.liveTitle;
       const ownerName = this.ownerName;
       const ownerIconUrl = this.ownerIconUrl;
-      console.log("hi");
       const data = {
         liveTitle,
         authorName,
         message,
-        iconUrl: await this.fetchBlobUrl(iconLargeUrl),
+        iconUrl: iconLargeUrl,
         ownerName,
-        ownerIconUrl: await this.fetchBlobUrl(ownerIconUrl),
+        ownerIconUrl: ownerIconUrl,
       };
 
-      console.log(data);
-      console.log("send!!!!")
-      console.log(chrome.runtime.sendMessage)
       chrome.runtime.sendMessage(
         {
           id: "comment",
