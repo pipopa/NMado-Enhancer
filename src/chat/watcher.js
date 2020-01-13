@@ -72,8 +72,6 @@ class Watcher {
     }
 
     const authorName = node.querySelector('#author-name').textContent;
-    console.log(authorName);
-    console.log(this.nameList);
     if (this.nameList.some(value => value === authorName.trim())) {
       const message = this.getMessage(node.querySelector('#message'));
       const iconUrl = node.querySelector('#img').getAttribute('src');

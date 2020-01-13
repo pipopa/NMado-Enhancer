@@ -84,7 +84,6 @@ const execNotification = async request => {
       ],
     })
   }
-  console.log(option);
 
   chrome.notifications.create(option, () => {});
 };
@@ -99,7 +98,6 @@ chrome.runtime.onInstalled.addListener(async () => {
 
 chrome.runtime.onMessage.addListener(message => {
   const { id, data } = message;
-  console.log(id);
   if (id === "comment") {
     execNotification(data);
     return;
