@@ -20,6 +20,7 @@ const onLoad = () => {
 const main = async () => {
   const re = /https:\/\/www.youtube\.com\/live_chat\?.*v=(.+)&/;
   const youtubeId = re.exec(location.href)[1];
+  let setIcon = false;
 
   let enhancer = await initEnhancer(youtubeId);
   chrome.runtime.sendMessage({
@@ -47,7 +48,8 @@ const main = async () => {
         //header.style.pointerEvents = "auto"
         break;
       case "channel-icon":
-        if (data.youtubeId === youtubeId && !enhancer.watcher.getOwnerIconUrl()) {
+        if (!setIcon && data.youtubeId === youtubeId && !enhancer.watcher.getOwnerIconUrl()) {
+          setIcon = true;
           enhancer.watcher.setOwnerIconUrl(data.url)
           const icon = document.createElement("div");
           icon.classList.add("channel-icon")
@@ -66,8 +68,6 @@ const main = async () => {
         if (data.youtubeId === youtubeId) {
           enhancer.watcher.setOwnerName(data.ownerName)
         }
-        break;
-      case "channel-icon":
         break;
     }
   });

@@ -105,6 +105,25 @@ chrome.runtime.onMessage.addListener(message => {
     return;
   }
   switch (id) {
+    case "request-player-loading-status":
+    case "request-channel-icon":
+    case "request-live-title":
+    case "request-owner-name":
+    case "player-loaded":
+    case "channel-icon":
+    case "live-title":
+    case "owner-name":
+      chrome.tabs.query(
+        { url: "https://piporoid.net/NMado/*" }, tabs => {
+          for (tab of tabs) {
+            chrome.tabs.sendMessage(tab.id, {
+              id: id,
+              data: data
+            });
+          }
+        }
+      );
+      break;
     default:
       chrome.tabs.query(
         { active: true, windowId: chrome.windows.WINDOW_ID_CURRENT },
