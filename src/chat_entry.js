@@ -9,7 +9,7 @@ const onLoad = () => {
   const checkTimer = setInterval(check, 1000);
   async function check () {
     if (document.querySelector("yt-live-chat-header-renderer") === null &&
-        document.querySelector("yt-formatted-string")
+        document.querySelector("yt-formatted-string") === null
     ) {
       return
     }
