@@ -115,6 +115,18 @@ const main = () => {
   });
   player.appendChild(resizeHandle);
 
+  const resetTimer = () => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      closeButton.style.display = "none";
+      resizeHandle.style.display = "none";
+      hide();
+      html5player.style.cursor = "none";
+    }, 2000);
+  }
+
+  resetTimer();
+
   document.addEventListener("mousemove", (e) => {
     chrome.runtime.sendMessage({
       id: "yt-mousemove",
@@ -174,13 +186,7 @@ const main = () => {
       show();
       closeButton.style.display = "block";
       resizeHandle.style.display = "block";
-      clearTimeout(timer);
-      timer = setTimeout(() => {
-        closeButton.style.display = "none";
-        resizeHandle.style.display = "none";
-        hide();
-        html5player.style.cursor = "none";
-      }, 2000);
+      resetTimer();
       chrome.runtime.sendMessage({
         id: "yt-mouseup",
         data: {
@@ -220,13 +226,7 @@ player.addEventListener("mouseup", e => {
     show();
     closeButton.style.display = "block";
     resizeHandle.style.display = "block";
-    clearTimeout(timer);
-    timer = setTimeout(() => {
-      closeButton.style.display = "none";
-      resizeHandle.style.display = "none";
-      hide();
-      html5player.style.cursor = "none";
-    }, 2000);
+    resetTimer();
     chrome.runtime.sendMessage({
       id: "yt-mouseup",
       data: {
