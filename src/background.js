@@ -56,19 +56,16 @@ const execNotification = async request => {
   const { liveTitle, authorName, message, iconUrl, ownerName, ownerIconUrl } = request;
   let title = authorName;
   let option = {
+    title,
     type: 'basic',
     message,
     iconUrl: await fetchBlobUrl(iconUrl)
   };
   if (getBrowser() === "Firefox") {
     // チャット送信者のあとに配信タイトルをつける
-    title += " from " + liveTitle
-    Object.assign(option, {
-      title,
-    })
+    option.message = liveTitle + "\n\n" + option.message;
   } else {
     Object.assign(option, {
-      title,
       contextMessage: liveTitle,
       buttons: [
         (await isMac())

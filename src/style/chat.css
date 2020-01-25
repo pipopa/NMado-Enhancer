@@ -87,6 +87,13 @@
   display: inline-block;
 }
 
+.nmado-highlight {
+  background: lavender;
+}
+.nmado-highlight-dark {
+  background: darkslateblue;
+}
+
 yt-live-chat-app {
   min-height: auto !important;
   min-width: auto !important;

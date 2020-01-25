@@ -37,6 +37,14 @@ const main = async () => {
             id: "request-channel-icon",
             data: { youtubeId: youtubeId }
           });
+          chrome.runtime.sendMessage({
+            id: "request-live-title",
+            data: { youtubeId: youtubeId }
+          });
+          chrome.runtime.sendMessage({
+            id: "request-owner-name",
+            data: { youtubeId: youtubeId }
+          });
         }
       case "nmado-mouseup":
         //header.style.pointerEvents = "auto"

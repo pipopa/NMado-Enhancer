@@ -4,7 +4,9 @@
  * Licensed under MIT (https://github.com/clngn/vtuber-comment-extension/blob/master/LICENSE)
  */
 
-const storageKey = 'nameList';
+const nameListKey = 'nameList';
+const highlightKey = 'highlight';
+const notificationKey = 'notification';
 
 const getStorageData = (key) => {
   return new Promise(resolve => {
@@ -19,11 +21,14 @@ const selector = {
 };
 
 class Watcher {
-  constructor(nameList) {
+  constructor(nameList, useHighlight, useNotification, dark) {
     this.liveTitle = "";
     this.ownerName = "";
     this.ownerIconUrl = "";
     this.nameList = nameList;
+    this.useHighlight = useHighlight;
+    this.useNotification = useNotification;
+    this.dark = dark
   }
 
   setLiveTitle(liveTitle) {
@@ -72,7 +77,17 @@ class Watcher {
     }
 
     const authorName = node.querySelector('#author-name').textContent;
-    if (this.nameList.some(value => value === authorName.trim())) {
+    if (!this.nameList.some(value => value === authorName.trim())) {
+      return;
+    }
+    if (this.useHighlight) {
+      if (this.dark) {
+        node.classList.add("nmado-highlight-dark");
+      } else {
+        node.classList.add("nmado-highlight");
+      }
+    }
+    if (this.useNotification) {
       const message = this.getMessage(node.querySelector('#message'));
       const iconUrl = node.querySelector('#img').getAttribute('src');
       const iconLargeUrl = iconUrl.replace(/\/photo.jpg$/, '');
@@ -87,7 +102,6 @@ class Watcher {
         ownerName,
         ownerIconUrl: ownerIconUrl,
       };
-
       chrome.runtime.sendMessage(
         {
           id: "comment",
@@ -107,10 +121,13 @@ const initWatcher = async (youtubeId) => {
     id: "request-owner-name",
     data: { youtubeId: youtubeId }
   });
-  const storageData = await getStorageData(storageKey);
-  let nameList = storageData[storageKey];
+  const storageData = await getStorageData([nameListKey, highlightKey, notificationKey]);
+  let nameList = storageData[nameListKey];
+  let useHighlight = storageData[highlightKey];
+  let useNotification = storageData[notificationKey];
 
-  let watcher = new Watcher(nameList);
+  const dark = document.querySelector("html").getAttribute("dark") !== null;
+  let watcher = new Watcher(nameList, useHighlight, useNotification, dark);
 
   const observer = new MutationObserver(records => {
     records.forEach(record => {
