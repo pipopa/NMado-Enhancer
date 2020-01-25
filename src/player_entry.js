@@ -1,4 +1,9 @@
 const onLoad = () => {
+  // N窓以外では動作させない
+  if (!document.referrer.match(/^https:\/\/piporoid.net\/NMado\//)) {
+    return;
+  }
+
   const checkTimer = setInterval(check, 1000);
   function check() {
     if (document.querySelector("div.html5-video-player") === null) {
@@ -10,11 +15,6 @@ const onLoad = () => {
 };
 
 const main = () => {
-  // N窓以外では動作させない
-  if (!document.referrer.match(/^https:\/\/piporoid.net\/NMado\//)) {
-    return;
-  }
-
   let cssPath = chrome.extension.getURL("style/player.css");
   let link = document.createElement("link");
   link.setAttribute("rel", "stylesheet");
