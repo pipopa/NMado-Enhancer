@@ -66,7 +66,7 @@ const main = async () => {
           enhancer.watcher.setOwnerIconUrl(data.url);
           const icon = document.createElement("div");
           icon.classList.add("channel-icon");
-          icon.style.backgroundImage = 'url("" + data.url + "")';
+          icon.style.backgroundImage = "url(\"" + data.url + "\")";
           const ytpButton = document.querySelector("yt-icon-button#overflow");
           let header = document.querySelector("yt-live-chat-header-renderer");
           header.insertBefore(icon, ytpButton);
