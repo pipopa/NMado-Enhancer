@@ -1,13 +1,13 @@
-const onLoad =  () => {
+const onLoad = () => {
   const checkTimer = setInterval(check, 1000);
-  function check () {
+  function check() {
     if (document.querySelector("div.html5-video-player") === null) {
-      return
+      return;
     }
     clearInterval(checkTimer);
     main();
   }
-}
+};
 
 const main = () => {
   // N窓以外では動作させない
@@ -123,11 +123,11 @@ const main = () => {
       hide();
       html5player.style.cursor = "none";
     }, 2000);
-  }
+  };
 
   resetTimer();
 
-  document.addEventListener("mousemove", (e) => {
+  document.addEventListener("mousemove", e => {
     chrome.runtime.sendMessage({
       id: "yt-mousemove",
       data: {
@@ -137,8 +137,8 @@ const main = () => {
         pageY: e.pageY
       }
     });
-  })
-  document.addEventListener("mouseup", (e) => {
+  });
+  document.addEventListener("mouseup", e => {
     if (e.which == 1) {
       closeButton.style.display = "block";
     }
@@ -152,8 +152,7 @@ const main = () => {
         which: e.which
       }
     });
-  })
-
+  });
 
   video.onclick = e => {
     e.stopPropagation();
@@ -200,45 +199,48 @@ const main = () => {
     }
   };
 
-player.addEventListener("mousedown", e => {
-  if (e.which !== 1 && e.which !== 2) {
-    return;
-  }
-  if (e.targettagName === "video" || e.target.classList.contains("ytp-offline-slate")) {
-    hide();
-    closeButton.style.display = "none";
-    resizeHandle.style.display = "none";
-    chrome.runtime.sendMessage({
-      id: "yt-mousedown",
-      data: {
-        winType: "video",
-        youtubeId: youtubeId,
-        pageX: e.pageX,
-        pageY: e.pageY,
-        which: e.which,
-        action: "move"
-      }
-    });
-  }
-})
-player.addEventListener("mouseup", e => {
-  if (e.which == 1) {
-    show();
-    closeButton.style.display = "block";
-    resizeHandle.style.display = "block";
-    resetTimer();
-    chrome.runtime.sendMessage({
-      id: "yt-mouseup",
-      data: {
-        winType: "video",
-        youtubeId: youtubeId,
-        pageX: e.pageX,
-        pageY: e.pageY,
-        which: e.which
-      }
-    });
-  }
-})
+  player.addEventListener("mousedown", e => {
+    if (e.which !== 1 && e.which !== 2) {
+      return;
+    }
+    if (
+      e.targettagName === "video" ||
+      e.target.classList.contains("ytp-offline-slate")
+    ) {
+      hide();
+      closeButton.style.display = "none";
+      resizeHandle.style.display = "none";
+      chrome.runtime.sendMessage({
+        id: "yt-mousedown",
+        data: {
+          winType: "video",
+          youtubeId: youtubeId,
+          pageX: e.pageX,
+          pageY: e.pageY,
+          which: e.which,
+          action: "move"
+        }
+      });
+    }
+  });
+  player.addEventListener("mouseup", e => {
+    if (e.which == 1) {
+      show();
+      closeButton.style.display = "block";
+      resizeHandle.style.display = "block";
+      resetTimer();
+      chrome.runtime.sendMessage({
+        id: "yt-mouseup",
+        data: {
+          winType: "video",
+          youtubeId: youtubeId,
+          pageX: e.pageX,
+          pageY: e.pageY,
+          which: e.which
+        }
+      });
+    }
+  });
   player.onmousemove = () => {
     if (!dragging) {
       show();
@@ -322,7 +324,9 @@ player.addEventListener("mouseup", e => {
         break;
       case "request-live-title":
         if (data.youtubeId === youtubeId) {
-          const titleLink = document.querySelector(".ytp-title-link.yt-uix-sessionlink");
+          const titleLink = document.querySelector(
+            ".ytp-title-link.yt-uix-sessionlink"
+          );
           if (titleLink) {
             const liveTitle = titleLink.innerHTML;
             chrome.runtime.sendMessage({
@@ -334,7 +338,9 @@ player.addEventListener("mouseup", e => {
         break;
       case "request-owner-name":
         if (data.youtubeId === youtubeId) {
-          const expandedTitle = document.querySelector(".ytp-title-expanded-title a");
+          const expandedTitle = document.querySelector(
+            ".ytp-title-expanded-title a"
+          );
           if (expandedTitle) {
             const ownerName = expandedTitle.innerHTML;
             chrome.runtime.sendMessage({

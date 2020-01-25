@@ -22,9 +22,9 @@ const selector = {
 
 class Watcher {
   constructor(nameList, useHighlight, useNotification, dark) {
-    this.liveTitle = "";
-    this.ownerName = "";
-    this.ownerIconUrl = "";
+    this.liveTitle = '';
+    this.ownerName = '';
+    this.ownerIconUrl = '';
     this.nameList = nameList;
     this.useHighlight = useHighlight;
     this.useNotification = useNotification;
@@ -82,9 +82,9 @@ class Watcher {
     }
     if (this.useHighlight) {
       if (this.dark) {
-        node.classList.add("nmado-highlight-dark");
+        node.classList.add('nmado-highlight-dark');
       } else {
-        node.classList.add("nmado-highlight");
+        node.classList.add('nmado-highlight');
       }
     }
     if (this.useNotification) {
@@ -104,7 +104,7 @@ class Watcher {
       };
       chrome.runtime.sendMessage(
         {
-          id: "comment",
+          id: 'comment',
           data: data
         }
       );
@@ -114,11 +114,11 @@ class Watcher {
 
 const initWatcher = async (youtubeId) => {
   chrome.runtime.sendMessage({
-    id: "request-live-title",
+    id: 'request-live-title',
     data: { youtubeId: youtubeId }
   });
   chrome.runtime.sendMessage({
-    id: "request-owner-name",
+    id: 'request-owner-name',
     data: { youtubeId: youtubeId }
   });
   const storageData = await getStorageData([nameListKey, highlightKey, notificationKey]);
@@ -126,7 +126,7 @@ const initWatcher = async (youtubeId) => {
   let useHighlight = storageData[highlightKey];
   let useNotification = storageData[notificationKey];
 
-  const dark = document.querySelector("html").getAttribute("dark") !== null;
+  const dark = document.querySelector('html').getAttribute('dark') !== null;
   let watcher = new Watcher(nameList, useHighlight, useNotification, dark);
 
   const observer = new MutationObserver(records => {

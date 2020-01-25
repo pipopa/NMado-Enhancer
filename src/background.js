@@ -16,7 +16,7 @@ const getBrowser = () => {
   } else {
     return "Edge";
   }
-}
+};
 
 const getStorageData = key => {
   return new Promise(resolve => {
@@ -30,34 +30,41 @@ const setStorageData = (key, value) => {
   return new Promise(resolve => {
     chrome.storage.local.set(
       {
-        [key]: value,
+        [key]: value
       },
       () => {
         resolve();
-      },
+      }
     );
   });
 };
 
 const isMac = () => {
   return new Promise(resolve => {
-    chrome.runtime.getPlatformInfo(info => resolve(info.os === 'mac'));
+    chrome.runtime.getPlatformInfo(info => resolve(info.os === "mac"));
   });
 };
 
-const fetchBlobUrl = async (url) => {
+const fetchBlobUrl = async url => {
   const resp = await fetch(url);
   const blob = await resp.blob();
   const blobUrl = window.URL.createObjectURL(blob);
   return blobUrl;
-}
+};
 
 const execNotification = async request => {
-  const { liveTitle, authorName, message, iconUrl, ownerName, ownerIconUrl } = request;
+  const {
+    liveTitle,
+    authorName,
+    message,
+    iconUrl,
+    ownerName,
+    ownerIconUrl
+  } = request;
   let title = authorName;
   let option = {
     title,
-    type: 'basic',
+    type: "basic",
     message,
     iconUrl: await fetchBlobUrl(iconUrl)
   };
@@ -69,17 +76,17 @@ const execNotification = async request => {
       contextMessage: liveTitle,
       buttons: [
         (await isMac())
-        ? {
-          // Macのときは長すぎるメッセージを表示するためにボタンを使う
-          title: message,
-        }
-        : {
-          // Windowsのときは通知元のチャンネル情報を表示するためにボタンを使う
-          title: ownerName,
-          iconUrl: await fetchBlobUrl(ownerIconUrl),
-        },
-      ],
-    })
+          ? {
+              // Macのときは長すぎるメッセージを表示するためにボタンを使う
+              title: message
+            }
+          : {
+              // Windowsのときは通知元のチャンネル情報を表示するためにボタンを使う
+              title: ownerName,
+              iconUrl: await fetchBlobUrl(ownerIconUrl)
+            }
+      ]
+    });
   }
 
   chrome.notifications.create(option, () => {});
@@ -108,16 +115,14 @@ chrome.runtime.onMessage.addListener(message => {
     case "channel-icon":
     case "live-title":
     case "owner-name":
-      chrome.tabs.query(
-        { url: "https://piporoid.net/NMado/*" }, tabs => {
-          for (tab of tabs) {
-            chrome.tabs.sendMessage(tab.id, {
-              id: id,
-              data: data
-            });
-          }
+      chrome.tabs.query({ url: "https://piporoid.net/NMado/*" }, tabs => {
+        for (tab of tabs) {
+          chrome.tabs.sendMessage(tab.id, {
+            id: id,
+            data: data
+          });
         }
-      );
+      });
       break;
     default:
       chrome.tabs.query(

@@ -8,8 +8,6 @@ const getBrowser = () => {
   } else {
     return "Edge";
   }
-}
+};
 
-export {
-  getBrowser
-}
+export { getBrowser };
