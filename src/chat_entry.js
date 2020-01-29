@@ -49,12 +49,18 @@ const main = async () => {
         }
       case "nmado-mouseup":
         //header.style.pointerEvents = 'auto'
+        document.documentElement.style.userSelect = 'auto'
+        document.documentElement.style.pointerEvents = 'auto'
         break;
       case "yt-mousedown":
         //header.style.pointerEvents = 'none'
+        document.documentElement.style.userSelect = 'none'
+        document.documentElement.style.pointerEvents = 'none'
         break;
       case "yt-mouseup":
         //header.style.pointerEvents = 'auto'
+        document.documentElement.style.userSelect = 'auto'
+        document.documentElement.style.pointerEvents = 'auto'
         break;
       case "channel-icon":
         if (
