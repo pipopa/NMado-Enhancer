@@ -36,6 +36,7 @@ document.querySelector('#save-button').addEventListener('click', async () => {
   const useHighlight = document.querySelector('#use-highlight').classList.contains('is-checked');
   const useNotification = document.querySelector('#use-notification').classList.contains('is-checked');
   const hideChat = document.querySelector('#hide-chat').classList.contains('is-checked');
+
   await setStorageData(nameListKey, inputData.split('\n'));
   await setStorageData(highlightKey, useHighlight);
   await setStorageData(notificationKey, useNotification);
@@ -67,7 +68,7 @@ document.querySelector('#notification-test-button').addEventListener('click', ()
 });
 
 const init = async () => {
-  const storageData = await getStorageData([nameListKey, highlightKey, notificationKey]);
+  const storageData = await getStorageData([nameListKey, highlightKey, notificationKey, hideChatKey]);
   const nameList = storageData[nameListKey];
   const useHighlight = storageData[highlightKey];
   const useNotification = storageData[notificationKey];

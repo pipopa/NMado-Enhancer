@@ -9,7 +9,8 @@ const getStorageData = (key) => {
 }
 
 const initHider = async () => {
-  const hideChat = await getStorageData(hideChatKey);
+  const storageData = await getStorageData(hideChatKey);
+  const hideChat = storageData[hideChatKey];
   if (hideChat) {
     let inputPanel = document.querySelector("div#input-panel");
     inputPanel.style.display = "none";
