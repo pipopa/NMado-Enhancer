@@ -7,6 +7,7 @@
 const nameListKey = 'nameList';
 const highlightKey = 'highlight';
 const notificationKey = 'notification';
+const hideChatKey = 'hideChat';
 
 const getStorageData = key => {
   return new Promise(resolve => {
@@ -34,9 +35,11 @@ document.querySelector('#save-button').addEventListener('click', async () => {
   const inputData = document.querySelector('#name-list textArea').value;
   const useHighlight = document.querySelector('#use-highlight').classList.contains('is-checked');
   const useNotification = document.querySelector('#use-notification').classList.contains('is-checked');
+  const hideChat = document.querySelector('#hide-chat').classList.contains('is-checked');
   await setStorageData(nameListKey, inputData.split('\n'));
   await setStorageData(highlightKey, useHighlight);
   await setStorageData(notificationKey, useNotification);
+  await setStorageData(hideChatKey, hideChat);
   document.querySelector('#result-dialog').showModal();
 });
 
@@ -68,6 +71,7 @@ const init = async () => {
   const nameList = storageData[nameListKey];
   const useHighlight = storageData[highlightKey];
   const useNotification = storageData[notificationKey];
+  const hideChat = storageData[hideChatKey];
 
   const textArea = document.querySelector('#name-list textArea');
   textArea.value = nameList.join('\n');
@@ -80,6 +84,11 @@ const init = async () => {
   if (useNotification) {
     const useNotificationCheckBox = document.querySelector('#use-notification');
     setTimeout(() => { useNotificationCheckBox.MaterialCheckbox.check(); }, 200);
+  }
+
+  if (hideChat) {
+    const hideChatCheckBox = document.querySelector('#hide-chat');
+    setTimeout(() => { hideChatCheckBox.MaterialCheckbox.check(); }, 200);
   }
 };
 init();
