@@ -28,9 +28,7 @@ module.exports = {
       { from: path.join(__dirname, "src", "images", "icon48.png"), to: "." },
       { from: path.join(__dirname, "src", "images", "icon16.png"), to: "." },
       { from: path.join(__dirname, "src", "style"), to: "style" },
-      { from: path.join(__dirname, "src", "options", "options.js"), to: "options/" },
-      { from: path.join(__dirname, "src", "options", "options.html"), to: "options/" },
-      { from: path.join(__dirname, "src", "options", "options.css"), to: "options/" }
+      { from: path.join(__dirname, "src", "options"), to: "options/" },
     ]),
     new CleanWebpackPlugin(),
   ]
