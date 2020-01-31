@@ -1,7 +1,7 @@
  {
     "name": "N窓 Enhancer",
     "version": "1.0.0",
-    "description": "N窓の操作性を向上させます",
+    "description": "N窓の機能強化を行います",
     "manifest_version": 2,
     "icons": {
       "16": "icon16.png",
