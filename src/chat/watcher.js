@@ -81,6 +81,7 @@ class Watcher {
 
     const authorName = node.querySelector("#author-name").textContent;
     if (!this.nameList.some(value => value === authorName.trim())) {
+      node.classList.remove("nmado-highlight-dark", "nmado-highlight")
       return;
     }
     if (this.useHighlight) {
