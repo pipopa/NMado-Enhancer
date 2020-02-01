@@ -4,17 +4,15 @@ import { initHider } from "./hider.js";
 
 class ChatEnahncer {
   constructor(watcher) {
-    this.watcher = watcher
+    this.watcher = watcher;
   }
 }
 
-const initEnhancer = async (youtubeId) => {
+const initEnhancer = async youtubeId => {
   let watcher = await initWatcher(youtubeId);
   initDragger(youtubeId);
   initHider();
   return new ChatEnahncer(watcher);
-}
+};
 
-export {
-  initEnhancer
-}
+export { initEnhancer };

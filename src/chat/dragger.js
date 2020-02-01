@@ -1,4 +1,4 @@
-const initDragger = (youtubeId) => {
+const initDragger = youtubeId => {
   let cssPath = chrome.extension.getURL("style/chat.css");
   let link = document.createElement("link");
   link.setAttribute("rel", "stylesheet");
@@ -45,7 +45,7 @@ const initDragger = (youtubeId) => {
     }
   });
   resizeHandle.addEventListener("mouseover", () => {});
-  resizeHandle.addEventListener("mouseup", (e) => {
+  resizeHandle.addEventListener("mouseup", e => {
     chrome.runtime.sendMessage({
       id: "yt-mouseup",
       data: {
@@ -152,9 +152,6 @@ const initDragger = (youtubeId) => {
       }
     });
   });
-
 };
 
-export {
-  initDragger
-}
+export { initDragger };

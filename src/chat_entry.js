@@ -49,18 +49,18 @@ const main = async () => {
         }
       case "nmado-mouseup":
         //header.style.pointerEvents = 'auto'
-        document.documentElement.style.userSelect = 'auto'
-        document.documentElement.style.pointerEvents = 'auto'
+        document.documentElement.style.userSelect = "auto";
+        document.documentElement.style.pointerEvents = "auto";
         break;
       case "yt-mousedown":
         //header.style.pointerEvents = 'none'
-        document.documentElement.style.userSelect = 'none'
-        document.documentElement.style.pointerEvents = 'none'
+        document.documentElement.style.userSelect = "none";
+        document.documentElement.style.pointerEvents = "none";
         break;
       case "yt-mouseup":
         //header.style.pointerEvents = 'auto'
-        document.documentElement.style.userSelect = 'auto'
-        document.documentElement.style.pointerEvents = 'auto'
+        document.documentElement.style.userSelect = "auto";
+        document.documentElement.style.pointerEvents = "auto";
         break;
       case "channel-icon":
         if (
@@ -72,7 +72,7 @@ const main = async () => {
           enhancer.watcher.setOwnerIconUrl(data.url);
           const icon = document.createElement("div");
           icon.classList.add("channel-icon");
-          icon.style.backgroundImage = "url(\"" + data.url + "\")";
+          icon.style.backgroundImage = 'url("' + data.url + '")';
           const ytpButton = document.querySelector("yt-icon-button#overflow");
           let header = document.querySelector("yt-live-chat-header-renderer");
           header.insertBefore(icon, ytpButton);

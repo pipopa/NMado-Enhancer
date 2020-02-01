@@ -4,31 +4,31 @@
  * Licensed under MIT (https://github.com/clngn/vtuber-comment-extension/blob/master/LICENSE)
  */
 
-const nameListKey = 'nameList';
-const highlightKey = 'highlight';
-const notificationKey = 'notification';
+const nameListKey = "nameList";
+const highlightKey = "highlight";
+const notificationKey = "notification";
 
-const getStorageData = (key) => {
+const getStorageData = key => {
   return new Promise(resolve => {
     chrome.storage.local.get(key, value => {
       resolve(value);
     });
   });
-}
+};
 
 const selector = {
-  getChatDom: () => document.querySelector('yt-live-chat-app'),
+  getChatDom: () => document.querySelector("yt-live-chat-app")
 };
 
 class Watcher {
   constructor(nameList, useHighlight, useNotification, dark) {
-    this.liveTitle = '';
-    this.ownerName = '';
-    this.ownerIconUrl = '';
+    this.liveTitle = "";
+    this.ownerName = "";
+    this.ownerIconUrl = "";
     this.nameList = nameList;
     this.useHighlight = useHighlight;
     this.useNotification = useNotification;
-    this.dark = dark
+    this.dark = dark;
   }
 
   setLiveTitle(liveTitle) {
@@ -56,14 +56,17 @@ class Watcher {
   }
 
   getMessage(el) {
-    let messageString = '';
+    let messageString = "";
 
     for (const child of el.childNodes) {
       if (child.nodeType === Node.TEXT_NODE) {
         messageString += child.wholeText;
       }
       if (child.nodeType === Node.ELEMENT_NODE) {
-        if (child.nodeName.toLowerCase() === 'img' && typeof child.alt === 'string') {
+        if (
+          child.nodeName.toLowerCase() === "img" &&
+          typeof child.alt === "string"
+        ) {
           messageString += child.alt;
         }
       }
@@ -72,25 +75,25 @@ class Watcher {
   }
 
   async checkComment(node) {
-    if (node.nodeName.toLowerCase() !== 'yt-live-chat-text-message-renderer') {
+    if (node.nodeName.toLowerCase() !== "yt-live-chat-text-message-renderer") {
       return;
     }
 
-    const authorName = node.querySelector('#author-name').textContent;
+    const authorName = node.querySelector("#author-name").textContent;
     if (!this.nameList.some(value => value === authorName.trim())) {
       return;
     }
     if (this.useHighlight) {
       if (this.dark) {
-        node.classList.add('nmado-highlight-dark');
+        node.classList.add("nmado-highlight-dark");
       } else {
-        node.classList.add('nmado-highlight');
+        node.classList.add("nmado-highlight");
       }
     }
     if (this.useNotification) {
-      const message = this.getMessage(node.querySelector('#message'));
-      const iconUrl = node.querySelector('#img').getAttribute('src');
-      const iconLargeUrl = iconUrl.replace(/\/photo.jpg$/, '');
+      const message = this.getMessage(node.querySelector("#message"));
+      const iconUrl = node.querySelector("#img").getAttribute("src");
+      const iconLargeUrl = iconUrl.replace(/\/photo.jpg$/, "");
       const liveTitle = this.liveTitle;
       const ownerName = this.ownerName;
       const ownerIconUrl = this.ownerIconUrl;
@@ -100,33 +103,35 @@ class Watcher {
         message,
         iconUrl: iconLargeUrl,
         ownerName,
-        ownerIconUrl: ownerIconUrl,
+        ownerIconUrl: ownerIconUrl
       };
-      chrome.runtime.sendMessage(
-        {
-          id: 'comment',
-          data: data
-        }
-      );
+      chrome.runtime.sendMessage({
+        id: "comment",
+        data: data
+      });
     }
   }
 }
 
-const initWatcher = async (youtubeId) => {
+const initWatcher = async youtubeId => {
   chrome.runtime.sendMessage({
-    id: 'request-live-title',
+    id: "request-live-title",
     data: { youtubeId: youtubeId }
   });
   chrome.runtime.sendMessage({
-    id: 'request-owner-name',
+    id: "request-owner-name",
     data: { youtubeId: youtubeId }
   });
-  const storageData = await getStorageData([nameListKey, highlightKey, notificationKey]);
+  const storageData = await getStorageData([
+    nameListKey,
+    highlightKey,
+    notificationKey
+  ]);
   let nameList = storageData[nameListKey];
   let useHighlight = storageData[highlightKey];
   let useNotification = storageData[notificationKey];
 
-  const dark = document.querySelector('html').getAttribute('dark') !== null;
+  const dark = document.querySelector("html").getAttribute("dark") !== null;
   let watcher = new Watcher(nameList, useHighlight, useNotification, dark);
 
   const observer = new MutationObserver(records => {
@@ -137,12 +142,9 @@ const initWatcher = async (youtubeId) => {
 
   observer.observe(selector.getChatDom(), {
     childList: true,
-    subtree: true,
+    subtree: true
   });
   return watcher;
 };
 
-export {
-  initWatcher,
-  Watcher
-}
+export { initWatcher, Watcher };
