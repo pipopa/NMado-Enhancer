@@ -60,15 +60,8 @@ const initDragger = (youtubeId) => {
   document.querySelector("div.yt-live-chat-app").appendChild(resizeHandle);
 
   header.addEventListener("mousedown", e => {
-    if (e.which !== 1) {
-      return;
-    }
-    if (
-      e.target.tagName === "YT-LIVE-CHAT-HEADER-RENDERER" ||
-      e.target.classList.contains("channel-icon") ||
-      (e.target.tagName !== "YT-ICON" &&
-        e.target.classList.contains("yt-live-chat-header-renderer"))
-    ) {
+    if (e.which === 2) {
+      e.preventDefault();
       chrome.runtime.sendMessage({
         id: "yt-mousedown",
         data: {
@@ -76,22 +69,33 @@ const initDragger = (youtubeId) => {
           youtubeId: youtubeId,
           pageX: e.pageX,
           pageY: e.pageY,
-          which: e.which,
-          action: "move"
+          which: e.which
         }
       });
+    } else if (e.which === 1) {
+      if (
+        e.target.tagName === "YT-LIVE-CHAT-HEADER-RENDERER" ||
+        e.target.classList.contains("channel-icon") ||
+        (e.target.tagName !== "YT-ICON" &&
+          e.target.classList.contains("yt-live-chat-header-renderer"))
+      ) {
+        chrome.runtime.sendMessage({
+          id: "yt-mousedown",
+          data: {
+            winType: "chat",
+            youtubeId: youtubeId,
+            pageX: e.pageX,
+            pageY: e.pageY,
+            which: e.which,
+            action: "move"
+          }
+        });
+      }
     }
   });
   document.querySelector("div#input-panel").addEventListener("mousedown", e => {
-    if (e.which !== 1) {
-      return;
-    }
-    if (
-      e.target.classList.contains("yt-live-chat-renderer") ||
-      e.target.classList.contains("yt-live-chat-message-input-renderer") ||
-      e.target.classList.contains("yt-live-chat-author-chip") ||
-      e.target.classList.contains("yt-img-shadow")
-    ) {
+    if (e.which === 2) {
+      e.preventDefault();
       chrome.runtime.sendMessage({
         id: "yt-mousedown",
         data: {
@@ -99,12 +103,30 @@ const initDragger = (youtubeId) => {
           youtubeId: youtubeId,
           pageX: e.pageX,
           pageY: e.pageY,
-          which: e.which,
-          action: "move"
+          which: e.which
         }
       });
+    } else if (e.which === 1) {
+      if (
+        e.target.classList.contains("yt-live-chat-renderer") ||
+        e.target.classList.contains("yt-live-chat-message-input-renderer") ||
+        e.target.classList.contains("yt-live-chat-author-chip") ||
+        e.target.classList.contains("yt-img-shadow")
+      ) {
+        chrome.runtime.sendMessage({
+          id: "yt-mousedown",
+          data: {
+            winType: "chat",
+            youtubeId: youtubeId,
+            pageX: e.pageX,
+            pageY: e.pageY,
+            which: e.which,
+            action: "move"
+          }
+        });
+      }
     }
-  })
+  });
   document.onmousemove = e => {
     e.preventDefault();
     resizeHandle.style.display = "block";
@@ -118,21 +140,6 @@ const initDragger = (youtubeId) => {
       }
     });
   };
-  document.documentElement.addEventListener("mousedown", e => {
-    if (e.which == 2) {
-      e.preventDefault()
-      chrome.runtime.sendMessage({
-        id: "yt-mousedown",
-        data: {
-          winType: "chat",
-          youtubeId: youtubeId,
-          pageX: e.pageX,
-          pageY: e.pageY,
-          which: e.which
-        }
-      });
-    }
-  });
   document.addEventListener("mouseup", e => {
     chrome.runtime.sendMessage({
       id: "yt-mouseup",
