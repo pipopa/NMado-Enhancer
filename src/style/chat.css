@@ -108,3 +108,6 @@ yt-live-chat-message-input-renderer {
 .yt-live-chat-text-input-field-renderer {
   cursor: text;
 }
+#categories-wrapper.yt-emoji-picker-renderer {
+  cursor: default !important;
+}
