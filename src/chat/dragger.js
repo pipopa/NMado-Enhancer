@@ -128,7 +128,6 @@ const initDragger = youtubeId => {
     }
   });
   document.onmousemove = e => {
-    e.preventDefault();
     resizeHandle.style.display = "block";
     chrome.runtime.sendMessage({
       id: "yt-mousemove",
