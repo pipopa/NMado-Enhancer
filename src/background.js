@@ -100,13 +100,36 @@ chrome.runtime.onInstalled.addListener(async () => {
   }
 });
 
-chrome.runtime.onMessage.addListener(message => {
+chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   const { id, data } = message;
   if (id === "comment") {
     execNotification(data);
     return;
   }
   switch (id) {
+    case "download-screenshot":
+      if (data.browser === "Chrome") {
+        chrome.downloads.download(
+          {
+            url: data.url,
+            filename: data.filename
+          },
+          () => {
+            sendResponse({});
+          }
+        );
+      } else if (data.browser === "Firefox") {
+        const url = window.URL.createObjectURL(data.blob);
+        chrome.downloads
+          .download({
+            url: url,
+            filename: data.filename
+          })
+          .then(() => {
+            window.URL.revokeObjectURL(url);
+          });
+      }
+      break;
     case "request-player-loading-status":
     case "request-channel-icon":
     case "request-live-title":
