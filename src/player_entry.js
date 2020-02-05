@@ -1,4 +1,5 @@
 import { getBrowser } from "./util.js";
+import * as sanitize from'sanitize-filename';
 
 const onLoad = () => {
   // N窓以外では動作させない
@@ -121,7 +122,7 @@ const main = () => {
       .getAttribute("aria-valuetext")
       .split("/")[0]
       .replace(/\s+/g, "");
-    const filename = liveTitle + "_" + currentTime + ".png";
+    const filename = sanitize(liveTitle + "_" + currentTime + ".png");
     canvas.toBlob(blobCallback(filename));
   });
   parent.insertBefore(screenShotButton, chatButton);
