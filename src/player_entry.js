@@ -337,19 +337,14 @@ const main = () => {
         closeButton.style.display = "block";
         resizeHandle.style.display = "block";
         dragging = false;
-        clearTimeout(timer);
-        timer = setTimeout(() => {
-          closeButton.style.display = "none";
-          resizeHandle.style.display = "none";
-          hide();
-          html5player.style.cursor = "none";
-        }, 2000);
+        resetTimer();
         break;
       case "yt-mousedown":
         dragging = data.which === 1;
         break;
       case "yt-mouseup":
         dragging = false;
+        resetTimer();
         break;
       case "request-player-loading-status":
         if (data.youtubeId === youtubeId) {
